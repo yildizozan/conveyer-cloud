@@ -3,17 +3,13 @@ version: "3"
 services:
   rabbitmq:
    container_name: rabbitmq
-   image: rabbitmq:3-management-alpine
-   volumes:
-   - ./rabbitmq-data/etc/:/etc/rabbitmq/
-   - ./rabbitmq-data/data/:/var/lib/rabbitmq/
-   - ./rabbitmq-data/logs/:/var/log/rabbitmq/
+   image: rabbitmq:3-management
    environment:
      RABBITMQ_ERLANG_COOKIE: SuperSecret
      #RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
      #RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
    ports:
-   - 5672:5672
+   - 5672
    - 15672:15672
    healthcheck:
      test: ["CMD", "curl", "-f", "http://localhost:15672"]
