@@ -1,0 +1,8 @@
+# Env files
+*.env
+
+# Docker Compose files
+.docker
+
+# RabbitMQ Volume
+rabbitmq-data/

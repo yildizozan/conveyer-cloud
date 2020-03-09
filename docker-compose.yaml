@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  rabbitmq:
+   container_name: rabbitmq
+   image: rabbitmq:3-management-alpine
+   volumes:
+   - ./rabbitmq-data/etc/:/etc/rabbitmq/
+   - ./rabbitmq-data/data/:/var/lib/rabbitmq/
+   - ./rabbitmq-data/logs/:/var/log/rabbitmq/
+   environment:
+     RABBITMQ_ERLANG_COOKIE: SuperSecret
+     #RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+     #RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+   ports:
+   - 5672:5672
+   - 15672:15672
+   healthcheck:
+     test: ["CMD", "curl", "-f", "http://localhost:15672"]
+     interval: 30s
+     timeout: 10s
+     retries: 5
+
+  collector:
+    container_name: collector
+    build: ./collector
+    restart: on-failure
+    depends_on:
+    - rabbitmq
+
+  emitter:
+    container_name: emitter
+    build: ./emitter
+    restart: on-failure
+    depends_on:
+    - rabbitmq
+
