@@ -2,21 +2,21 @@ version: "3"
 
 services:
   rabbitmq:
-   container_name: rabbitmq
-   image: rabbitmq:3-management
-   environment:
-     RABBITMQ_ERLANG_COOKIE: SuperSecret
-     #RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
-     #RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
-   ports:
-   - 5672
-   - 15672:15672
-   healthcheck:
-     test: ["CMD", "curl", "-f", "http://localhost:15672"]
-     interval: 30s
-     timeout: 10s
-     retries: 5
-
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_ERLANG_COOKIE: SuperSecret
+      #RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      #RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  
   collector:
     container_name: collector
     build: ./collector
@@ -28,6 +28,8 @@ services:
     container_name: emitter
     build: ./emitter
     restart: on-failure
+    ports:
+            - 3000:3000
     depends_on:
     - rabbitmq
 
