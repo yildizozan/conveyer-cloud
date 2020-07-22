@@ -1,6 +1,0 @@
-[submodule "collector"]
-	path = collector
-	url = https://github.com/yildizozan/conveyer-service-collector.git
-[submodule "emitter"]
-	path = emitter
-	url = https://github.com/yildizozan/conveyer-service-emitter.git
